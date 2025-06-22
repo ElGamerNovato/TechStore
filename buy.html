@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore - Finalizar Compra</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .checkout-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .checkout-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .checkout-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+        }
+
+        .card-icons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 25px;
+            background: #f8f9fa;
+            border: 1px solid #e1e8ed;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .card-icon.visa { background: #1a1f71; color: white; }
+        .card-icon.mastercard { background: #eb001b; color: white; }
+        .card-icon.amex { background: #006fcf; color: white; }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #f8f9fa, #ffffff);
+        }
+
+        .item-details h4 {
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-details p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .order-summary {
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+        }
+
+        .summary-row.total {
+            border-top: 2px solid #667eea;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #667eea;
+        }
+
+        .purchase-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 1rem;
+        }
+
+        .purchase-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .purchase-btn:active {
+            transform: translateY(0);
+        }
+
+        .purchase-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .security-info {
+            background: linear-gradient(45deg, #e8f5e8, #f0f8f0);
+            border: 1px solid #2ed573;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+            text-align: center;
+            color: #27ae60;
+            font-size: 0.9rem;
+        }
+
+        .success-modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .success-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 3rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: successSlideIn 0.5s ease;
+        }
+
+        @keyframes successSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #2ed573;
+            margin-bottom: 1rem;
+            animation: checkmark 0.6s ease 0.3s both;
+        }
+
+        @keyframes checkmark {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-content h2 {
+            color: #2ed573;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .success-content p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .order-details {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            text-align: left;
+        }
+
+        .continue-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .spinner {
+            border: 3px solid #e1e8ed;
+            border-radius: 50%;
+            border-top: 3px solid #667eea;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #ff4757;
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            color: white;
+        }
+
+        .empty-cart i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .report-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255, 71, 87, 0.3);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .report-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 71, 87, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo">
+            <i class="fas fa-laptop"></i> TechStore
+        </a>
+        <div class="nav-links">
+            <a href="/">Inicio</a>
+            <a href="/account">Mi Cuenta</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="checkout-header">
+            <h1>Finalizar Compra</h1>
+            <p>Completa tu información de pago para continuar</p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div id="loadingContainer" class="loading">
+            <div class="spinner"></div>
+            <p>Cargando información del carrito...</p>
+        </div>
+
+        <div id="emptyCartContainer" class="empty-cart" style="display: none;">
+            <i class="fas fa-shopping-cart"></i>
+            <h2>Tu carrito está vacío</h2>
+            <p>Agrega algunos productos antes de proceder al pago</p>
+            <br>
+            <a href="/" class="continue-btn">Ir a la tienda</a>
+        </div>
+
+        <div id="checkoutContainer" class="checkout-container" style="display: none;">
+            <!-- Payment Information -->
+            <div class="checkout-section">
+                <h2 class="section-title">
+                    <i class="fas fa-credit-card"></i>
+                    Información de Pago
+                </h2>
+                
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="cardholderName">Nombre del Titular</label>
+                        <input type="text" id="cardholderName" name="cardholderName" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cardNumber">Número de Tarjeta</label>
+                        <input type="text" id="cardNumber" name="cardNumber" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                        <div class="card-icons">
+                            <div class="card-icon visa">VISA</div>
+                            <div class="card-icon mastercard">MC</div>
+                            <div class="card-icon amex">AMEX</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expiryDate">Fecha de Vencimiento</label>
+                            <input type="text" id="expiryDate" name="expiryDate" class="form-input" placeholder="MM/AA" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" name="cvv" class="form-input" placeholder="123" maxlength="4" required>
+                        </div>
+                    </div>
+                    
+                    <div class="security-info">
+                        <i class="fas fa-shield-alt"></i>
+                        Tu información está protegida con encriptación SSL de 256 bits
+                    </div>
+                    
+                    <button type="submit" class="purchase-btn" id="purchaseBtn">
+                        <i class="fas fa-lock"></i> Completar Compra
+                    </button>
+                </form>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="checkout-section">
+                <h2 class="section-title">
+                    <i class="fas fa-receipt"></i>
+                    Resumen del Pedido
+                </h2>
+                
+                <div id="orderItems">
+                    <!-- Cart items will be loaded here -->
+                </div>
+                
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Envío:</span>
+                        <span>Gratis</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Impuestos:</span>
+                        <span id="taxes">$0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="success-modal">
+        <div class="success-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>¡Compra Exitosa!</h2>
+            <p>Tu pedido ha sido procesado correctamente. Recibirás un email de confirmación en breve.</p>
+            
+            <div class="order-details">
+                <div class="summary-row">
+                    <strong>Número de Orden:</strong>
+                    <span id="orderNumber"></span>
+                </div>
+                <div class="summary-row">
+                    <strong>Total Pagado:</strong>
+                    <span id="orderTotal"></span>
+                </div>
+            </div>
+            
+            <button class="continue-btn" onclick="goToAccount()">Ver Mis Pedidos</button>
+            <button class="continue-btn" onclick="goToHome()">Seguir Comprando</button>
+        </div>
+    </div>
+
+    <button class="report-btn" onclick="openReportModal()">
+        <i class="fas fa-exclamation-triangle"></i> Reportar un problema
+    </button>
+
+    <!-- Report Problem Modal -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeReportModal()">&times;</span>
+            <h2>Reportar un Problema</h2>
+            <form id="reportForm">
+                <div class="form-group">
+                    <label for="description">Descripción del problema:</label>
+                    <textarea id="description" name="description" required placeholder="Describe el problema que encontraste..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Enviar Reporte</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let cartItems = [];
+        let isProcessing = false;
+
+        // Check authentication
+        async function checkAuth() {
+            try {
+                const response = await fetch('/api/check-session');
+                const data = await response.json();
+                
+                if (!data.authenticated) {
+                    window.location.href = '/login';
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                console.error('Error checking auth:', error);
+                window.location.href = '/login';
+                return false;
+            }
+        }
+
+        // Load cart items
+        async function loadCart() {
+            try {
+                const response = await fetch('/api/cart');
+                if (response.ok) {
+                    cartItems = await response.json();
+                    
+                    document.getElementById('loadingContainer').style.display = 'none';
+                    
+                    if (cartItems.length === 0) {
+                        document.getElementById('emptyCartContainer').style.display = 'block';
+                    } else {
+                        document.getElementById('checkoutContainer').style.display = 'grid';
+                        displayOrderSummary();
+                    }
+                } else {
+                    throw new Error('Failed to load cart');
+                }
+            } catch (error) {
+                console.error('Error loading cart:', error);
+                showError('Error al cargar el carrito');
+            }
+        }
+
+        // Display order summary
+        function displayOrderSummary() {
+            const container = document.getElementById('orderItems');
+            
+            container.innerHTML = cartItems.map(item => `
+                <div class="order-item">
+                    <div class="item-details">
+                        <h4>${item.name}</h4>
+                        <p>Cantidad: ${item.quantity} × ${item.price}</p>
+                    </div>
+                    <div class="item-price">${item.total_price}</div>
+                </div>
+            `).join('');
+
+            // Calculate totals
+            const subtotal = cartItems.reduce((sum, item) => sum + parseFloat(item.total_price), 0);
+            const taxes = subtotal * 0.18; // 18% tax
+            const total = subtotal + taxes;
+
+            document.getElementById('subtotal').textContent = `${subtotal.toFixed(2)}`;
+            document.getElementById('taxes').textContent = `${taxes.toFixed(2)}`;
+            document.getElementById('total').textContent = `${total.toFixed(2)}`;
+        }
+
+        // Format card number input
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+
+        // Format expiry date input
+        document.getElementById('expiryDate').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        // Format CVV input
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+
+        // Handle payment form submission
+        document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (isProcessing) return;
+            
+            isProcessing = true;
+            const purchaseBtn = document.getElementById('purchaseBtn');
+            purchaseBtn.disabled = true;
+            purchaseBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+            
+            const formData = new FormData(e.target);
+            const paymentData = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch('/api/purchase', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(paymentData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showSuccess(result.orderNumber, result.totalAmount);
+                } else {
+                    showError(result.error || 'Error al procesar el pago');
+                }
+            } catch (error) {
+                console.error('Purchase error:', error);
+                showError('Error de conexión al procesar el pago');
+            } finally {
+                isProcessing = false;
+                purchaseBtn.disabled = false;
+                purchaseBtn.innerHTML = '<i class="fas fa-lock"></i> Completar Compra';
+            }
+        });
+
+        // Show success modal
+        function showSuccess(orderNumber, totalAmount) {
+            document.getElementById('orderNumber').textContent = orderNumber;
+            document.getElementById('orderTotal').textContent = `${totalAmount}`;
+            document.getElementById('successModal').style.display = 'block';
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            
+            setTimeout(() => {
+                errorElement.style.display = 'none';
+            }, 5000);
+        }
+
+        // Navigation functions
+        function goToAccount() {
+            window.location.href = '/account';
+        }
+
+        function goToHome() {
+            window.location.href = '/';
+        }
+
+        // Report problem modal functions
+        function openReportModal() {
+            document.getElementById('reportModal').style.display = 'block';
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').style.display = 'none';
+            document.getElementById('reportForm').reset();
+        }
+
+        // Handle report form submission
+        document.getElementById('reportForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const description = document.getElementById('description').value;
+            
+            try {
+                const response = await fetch('/api/report-problem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ description })
+                });
+
+                if (response.ok) {
+                    showNotification('Problema reportado exitosamente');
+                    closeReportModal();
+                } else {
+                    showNotification('Error al reportar problema', 'error');
+                }
+            } catch (error) {
+                console.error('Error reporting problem:', error);
+                showNotification('Error al reportar problema', 'error');
+            }
+        });
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                color: white;
+                font-weight: 600;
+                z-index: 1002;
+                animation: slideIn 0.3s ease;
+                background: ${type === 'error' ? '#ff4757' : '#2ed573'};
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const reportModal = document.getElementById('reportModal');
+            const successModal = document.getElementById('successModal');
+            
+            if (event.target === reportModal) {
+                closeReportModal();
+            }
+            // Don't allow closing success modal by clicking outside
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (await checkAuth()) {
+                loadCart();
+            }
+        });
+    </script>
+
+    <style>
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+    </style>
+</body>
+</html>
