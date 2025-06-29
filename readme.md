@@ -1,1 +1,1 @@
-hasta la vista baby
+hasta la vista mi amor
